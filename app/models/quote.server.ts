@@ -39,7 +39,9 @@ export async function getQuote({
 
 export async function getQuoteListItems({
 	userId,
-}: Pick<Quote, "userId">): Promise<Array<Pick<Quote, "id" | "title">>> {
+}: Pick<Quote, "userId">): Promise<
+	Array<Pick<Quote, "id" | "title" | "body">>
+> {
 	const db = await arc.tables();
 
 	const result = await db.quote.query({
@@ -49,15 +51,37 @@ export async function getQuoteListItems({
 
 	return result.Items.map((n: any) => ({
 		title: n.title,
+		body: n.body,
 		id: skToId(n.sk),
 	}));
 }
+
+export async function getQuotes({
+	userId,
+}: Pick<Quote, "userId">): Promise<
+	Array<Pick<Quote, "id" | "title" | "body">>
+> {
+	const db = await arc.tables();
+
+	const result = await db.quote.query({
+		KeyConditionExpression: "pk = :pk",
+		ExpressionAttributeValues: { ":pk": userId },
+	});
+
+	return result.Items.map((n: any) => ({
+		title: n.title,
+		body: n.body,
+		id: skToId(n.sk),
+	}));
+}
+
+export type SubQuote = Pick<Quote, "body" | "title" | "userId">;
 
 export async function createQuote({
 	body,
 	title,
 	userId,
-}: Pick<Quote, "body" | "title" | "userId">): Promise<Quote> {
+}: SubQuote): Promise<Quote> {
 	const db = await arc.tables();
 
 	const result = await db.quote.put({
@@ -72,6 +96,15 @@ export async function createQuote({
 		title: result.title,
 		body: result.body,
 	};
+}
+
+export async function createQuotes({
+	quotes,
+}: {
+	quotes: SubQuote[];
+}): Promise<Quote[]> {
+	const results = await Promise.all(quotes.map(createQuote));
+	return results;
 }
 
 export async function deleteQuote({

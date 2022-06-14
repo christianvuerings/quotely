@@ -12,6 +12,7 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
+import styles from "./styles/global.css";
 
 import tailwindStylesheetUrl from "./styles/tailwind.css";
 import { getUser } from "./session.server";
@@ -19,6 +20,14 @@ import { getUser } from "./session.server";
 export const links: LinksFunction = () => {
   return [
     { rel: "stylesheet", href: tailwindStylesheetUrl },
+    {
+      rel: "stylesheet",
+      href: "https://fonts.googleapis.com/css?family=Lato:300:400",
+    },
+    {
+      rel: "stylesheet",
+      href: styles,
+    },
     // NOTE: Architect deploys the public directory to /_static/
     { rel: "icon", href: "/_static/favicon.ico" },
   ];
@@ -26,7 +35,7 @@ export const links: LinksFunction = () => {
 
 export const meta: MetaFunction = () => ({
   charset: "utf-8",
-  title: "Remix Notes",
+  title: "Quotely",
   viewport: "width=device-width,initial-scale=1",
 });
 
