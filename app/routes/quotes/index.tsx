@@ -1,7 +1,8 @@
-import { Form, Link, useActionData } from "@remix-run/react";
-import { ActionFunction, json, redirect } from "@remix-run/server-runtime";
+import { Form } from "@remix-run/react";
+import type { ActionFunction } from "@remix-run/server-runtime";
 import { useContext, useRef, useState } from "react";
-import { Quote, QuotesContext } from "~/context/QuotesContext";
+import type { Quote } from "~/context/QuotesContext";
+import { QuotesContext } from "~/context/QuotesContext";
 import { createQuotes } from "~/models/quote.server";
 import { requireUserId } from "~/session.server";
 
@@ -31,7 +32,7 @@ export const action: ActionFunction = async ({ request }) => {
   return null;
 };
 
-function Quote({
+function QuoteItem({
   quote,
   updateQuote,
 }: {
@@ -86,7 +87,7 @@ function Quotes({
     <ul>
       {quotes.map((quote) => (
         <li key={quote.id}>
-          <Quote quote={quote} updateQuote={updateQuote} />
+          <QuoteItem quote={quote} updateQuote={updateQuote} />
         </li>
       ))}
     </ul>

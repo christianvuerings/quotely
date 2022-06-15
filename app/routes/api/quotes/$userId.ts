@@ -1,6 +1,7 @@
-import { json, LoaderFunction } from "@remix-run/server-runtime";
+import { json } from "@remix-run/server-runtime";
+import type { LoaderFunction } from "@remix-run/node";
 import invariant from "tiny-invariant";
-import { getQuotes, Quote } from "~/models/quote.server";
+import { getQuotes, type Quote } from "~/models/quote.server";
 
 type LoaderData = {
   quotes: Pick<Quote, "id" | "title" | "body">[];
